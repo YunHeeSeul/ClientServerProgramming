@@ -6,32 +6,48 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class StudentList {
-	protected ArrayList<Course> vStudent;
-	
-	public StudentList(String sStudentFileName) throws FileNotFoundException, IOException {	//파일을 집어넣으면
-		BufferedReader objStudentFile = new BufferedReader(new FileReader(sStudentFileName));	//그 파일을 읽어서
-		this.vStudent = new ArrayList<Course>();	//리스트에 넣고
-		while (objStudentFile.ready()) {	//끝날 때까지 한 줄 한 줄 읽어서 리스트에 add. 리스트화 하는 것
-			String stuInfo = objStudentFile.readLine();
-			if (!stuInfo.equals("")) {
-				this.vStudent.add(new Course(stuInfo));	//한 줄 한 줄씩 읽어서 어레이리스트 Student로 들어감
-			}
-		}
-		objStudentFile.close();
-	}
+    protected ArrayList<Student> vStudent;
+    Student student;
 
-	public ArrayList<Course> getAllCourseRecords() {	//읽어오는 부분
+    public StudentList(String sStudentFileName) throws FileNotFoundException, IOException {	//파일을 집어넣으면
+        BufferedReader objStudentFile = new BufferedReader(new FileReader(sStudentFileName));	//그 파일을 읽어서
+        this.vStudent = new ArrayList<Student>();	//리스트에 넣고
+        while (objStudentFile.ready()) {	//끝날 때까지 한 줄 한 줄 읽어서 리스트에 add
+            String stuInfo = objStudentFile.readLine();
+            if (!stuInfo.equals("")) {
+                this.vStudent.add(new Student(stuInfo));	//한 줄 한 줄씩 읽어서
+            }
+        }
+        objStudentFile.close();
+    }
 
-		return this.vStudent;
-	}
+    public ArrayList<Student> getAllStudentRecords() {	//읽어오는 부분
+        return this.vStudent;
+    }
 
-	public boolean isRegisteredCourse(String sSID) {	//학생이 되어 있는지 없는지를 확인하는 부분
-	for (int i = 0; i < this.vStudent.size(); i++) {
-			Course objStudent = (Course) this.vStudent.get(i);
-			if (objStudent.match(sSID)) {
-				return true;
-			}
-		}
-		return false;
-	}
+    public String printAllStudentList() {
+        String sReturn = "";
+        for(Student student : this.getAllStudentRecords()) {
+            sReturn = sReturn + printAllStudentRecords(student)+"\n";
+        }
+        return sReturn;
+    }
+
+    public String printAllStudentRecords(Student student) {
+        String stringReturn = "학생 ID : " + student.studentId + "  |  학생 이름 : " + student.name + "  |  전공 : " + student.department+ "  |  수강 과목 ID : ";
+        for (int i = 0; i < student.completedCoursesList.size(); i++)
+            stringReturn = stringReturn  + student.completedCoursesList.get(i).toString()+"  ";
+        return stringReturn;
+    }
+
+
+    public boolean isRegisteredStudent(String sSID) {	//학생이 되어 있는지 없는지를 확인하는 부분
+        for (int i = 0; i < this.vStudent.size(); i++) {
+            Student objStudent = (Student) this.vStudent.get(i);
+            if (objStudent.match(sSID)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
