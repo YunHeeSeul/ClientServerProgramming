@@ -29,16 +29,28 @@ public class Data extends UnicastRemoteObject implements DataIF{ //DataIF를 받
 
     //받은 데이터를 넘겨줘야 함.
     //우선 어레이리스트 통으로 넘겨주겠음
-    @Override
-    public ArrayList<Student> getAllStudentData()throws RemoteException{return studentList.getAllStudentRecords();}
-
-    @Override
-    public ArrayList<Course> getAllCourseData() throws RemoteException {return courseList.getAllCourseRecords();}
 
     @Override
     public String printAllCourseList() throws RemoteException {return courseList.printAllCourseList();}
 
     @Override
-    public String printAllStudentList() throws RemoteException {return studentList.printAllStudentList();}
+    public String printAllStudentList() throws RemoteException, NullDataException {return studentList.printAllStudentList();}
+
+    @Override
+    public boolean addStudent(String studentInfo) throws RemoteException {
+        if(studentList.addStudentRecords(studentInfo)) return true;
+        else return false;
+    }
+    @Override
+    public boolean deleteStudent(String studentID) throws RemoteException {
+        if(studentList.deleteStudentRecords(studentID)) return true;
+        else return false;
+    }
+//    @Override
+//    public ArrayList<Student> getAllStudentData() throws RemoteException {return studentList.getAllStudentRecords();}
+//
+//    @Override
+//    public ArrayList<Course> getAllCourseData() throws RemoteException {return studentList.getAllCourseRecords();}
+
 }
 
