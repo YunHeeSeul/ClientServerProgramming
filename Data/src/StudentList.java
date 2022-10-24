@@ -48,7 +48,7 @@ public class StudentList {
     //여기서는 성공 실패만 전달하지 이유는 전달하지 않음. 이유를 전달하게끔 해보도록
     public boolean addStudentRecords(String studentInfo){//String 대신 Student 클래스를 파라미터로 해도 되는데 좀 더 어려움
         //원래는 add안에 Student 클래스를 넣어줘야 하는데 우리는 파라미터를 String으로 받았으니까 new Student해주고 위의 constructor에서처럼 string을 줘서 생성해줌
-        //지금 기존에 있는 정보는 studentL에 있으니 여기에 add해줘야 함
+        //지금 기존에 있는 정보는 studentL에 있으니 여기에 add해줘야 함. Student 클래스를 add 해야 하는데 지금 우린 Student 클래스가 아니니까 new Student하고 string을 받아줌으로써 추가됨.
         if(this.studentL.add(new Student(studentInfo))) return true;
         else return false;
     }
