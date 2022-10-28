@@ -6,24 +6,27 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class CourseList {
-    protected ArrayList<Course> lCourse;
+    protected ArrayList<Course> courseL;
     Course course;
 
-    public CourseList(String courseFileName) throws FileNotFoundException, IOException {//파일을 집어넣으면
-        BufferedReader objStudentFile = new BufferedReader(new FileReader(courseFileName));//그 파일을 읽어서
-        this.lCourse = new ArrayList<Course>();//리스트에 넣고
-        while (objStudentFile.ready()) {//끝날 때까지 한 줄 한 줄 읽어서 리스트에 add
+    public CourseList(String courseFileName) throws FileNotFoundException, IOException {
+        BufferedReader objStudentFile = new BufferedReader(new FileReader(courseFileName));
+        this.courseL = new ArrayList<Course>();
+        while (objStudentFile.ready()) {
             String courInfo = objStudentFile.readLine();
-            //한 줄 한 줄씩 읽어서
-            if (!courInfo.equals("")) this.lCourse.add(new Course(courInfo));
+            if (!courInfo.equals("")) this.courseL.add(new Course(courInfo));
         }
         objStudentFile.close();
     }
 
-    public ArrayList<Course> getAllCourseRecords() {return this.lCourse;}
+    public ArrayList<Course> getAllCourseRecords() {
+        if(this.courseL.size()==0)System.out.println("-------COURSE DATA IS NULL !!!-------");
+        return this.courseL;
+    }
 
-    public String printAllCourseList() {
+    public String printAllCourseList(){
         String returnCList = "";
+        if(this.getAllCourseRecords().size()==0)System.out.println("-------COURSE DATA IS NULL !!!-------");
         for(Course course : this.getAllCourseRecords()) returnCList = returnCList + printAllCourseRecords(course)+"\n";
         return returnCList;
     }
@@ -31,14 +34,37 @@ public class CourseList {
     public String printAllCourseRecords(Course course) {
         String returnCRecords = "과목 ID : " + course.courseID + "  |  담당 교수 (성) : " + course.pName + "  |  과목명 : " + course.cName + "  |  선수 과목 ID : ";
         for (int i = 0; i < course.prerequisiteCourseList.size(); i++) returnCRecords = returnCRecords  + course.prerequisiteCourseList.get(i).toString()+"  ";
-        return returnCRecords;
+        return returnCRecords+"\n";
     }
 
-    public boolean isRegisteredCourse(String courseID) {//과목이 등록되어 있는지 없는지를 확인하는 부분
-        for (int i = 0; i < this.lCourse.size(); i++) {
-            Course objCourse = (Course) this.lCourse.get(i);
-            if (objCourse.match(courseID))return true;
+    public boolean addCourse(String courseInfo) {
+        if(this.courseL.add(new Course(courseInfo))) return true;
+        else return false;
+    }
+
+    public boolean deleteCourse(String courseID) {
+        for(int i=0; i<this.courseL.size(); i++) {
+            Course objCourse = this.courseL.get(i);
+            if(objCourse.checkSID(courseID)) {
+                if(this.courseL.remove(objCourse)) return true;
+                else return false;
+            }
         }
         return false;
+    }
+
+    public boolean isRegisteredCourse(String courseID) {
+        for (int i = 0; i < this.courseL.size(); i++) {
+            Course objCourse = (Course) this.courseL.get(i);
+            if (objCourse.checkSID(courseID))return true;
+        }
+        return false;
+    }
+
+    public boolean havePrerequisitedCourse(String courseID) {
+        for(int i=0; i<this.courseL.size(); i++) {
+            Course objCourse = this.courseL.get(i);
+            if(objCourse.getPrerequisiteCourses()==null) return true;
+        }return false;
     }
 }

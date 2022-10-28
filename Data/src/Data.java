@@ -8,9 +8,10 @@ import java.util.ArrayList;
 
 public class Data extends UnicastRemoteObject implements DataIF{ //DataIF를 받아서 Data 클래스를 만들었음
     private static final long serialVersionUID = 1L;
-    protected static StudentList studentList;   //이걸 밑에 쓰지 않고 위에 쓴 이유는 main 구역안에서만 사용하는게 아니라
-                                                //구역 밖 getData()에서도 사용해야 하기 때문
+
+    protected static StudentList studentList;
     protected static CourseList courseList;
+    protected static ReservationList reservationList;
     protected Data() throws RemoteException{super();}
 
     public static void main(String []args) throws FileNotFoundException, IOException{
@@ -31,26 +32,84 @@ public class Data extends UnicastRemoteObject implements DataIF{ //DataIF를 받
     //우선 어레이리스트 통으로 넘겨주겠음
 
     @Override
-    public String printAllCourseList() throws RemoteException {return courseList.printAllCourseList();}
+    public String printAllStudentList() throws RemoteException {return studentList.printAllStudentList();}
 
     @Override
-    public String printAllStudentList() throws RemoteException, NullDataException {return studentList.printAllStudentList();}
+    public String printAllCourseList() throws RemoteException{return courseList.printAllCourseList();}
+
+    @Override
+    public String printAllReservationList() throws RemoteException {return reservationList.printAllReservationList();}
 
     @Override
     public boolean addStudent(String studentInfo) throws RemoteException {
         if(studentList.addStudentRecords(studentInfo)) return true;
         else return false;
     }
+
     @Override
     public boolean deleteStudent(String studentID) throws RemoteException {
         if(studentList.deleteStudentRecords(studentID)) return true;
         else return false;
     }
-//    @Override
-//    public ArrayList<Student> getAllStudentData() throws RemoteException {return studentList.getAllStudentRecords();}
-//
-//    @Override
-//    public ArrayList<Course> getAllCourseData() throws RemoteException {return studentList.getAllCourseRecords();}
 
+    @Override
+    public boolean addCourse(String courseInfo) throws RemoteException {
+        if(courseList.addCourse(courseInfo)) return true;
+        else return false;
+    }
+
+    @Override
+    public boolean deleteCourse(String courseID) throws RemoteException {
+        if(courseList.deleteCourse(courseID)) return true;
+        return false;
+    }
+
+    @Override
+    public boolean makeReservation(String reservInfo) throws RemoteException {
+        if(reservationList.addReservationRecords(reservInfo)) return true;
+        return false;
+    }
+
+    @Override
+    public ArrayList<Student> getStudent() throws RemoteException {return studentList.studentL;}
+
+    @Override
+    public ArrayList<Course> getCourse() throws RemoteException {return courseList.courseL;}
+
+    @Override
+    public boolean login(String id, String pw) throws RemoteException {
+        if(studentList.login(id, pw)) return true;
+        return false;
+    }
+
+    @Override
+    public boolean isRegisteredStudent(String studentID) throws RemoteException {
+        if(studentList.isRegisteredStudent(studentID)) return true;
+        return false;
+    }
+
+    @Override
+    public boolean isRegisteredCourse(String courseID) throws RemoteException {
+        if(courseList.isRegisteredCourse(courseID)) return true;
+        return false;
+    }
+
+    @Override
+    public boolean doPrerequisitedCourse(String studentID, String courseID) throws RemoteException {
+        if(studentList.doPrerequisitedCourse(studentID, courseID)) return true;
+        return false;
+    }
+
+    @Override
+    public boolean havePrerequisitedCourse(String courseID) throws RemoteException {
+        if(courseList.havePrerequisitedCourse(courseID)) return true;
+        return false;
+    }
+
+    @Override
+    public boolean deleteReservation(String studentID, String courseID) throws RemoteException {
+        if(reservationList.deleteReservation(studentID, courseID)) return true;
+        return false;
+    }
 }
 
