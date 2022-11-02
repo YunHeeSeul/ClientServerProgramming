@@ -5,10 +5,15 @@ import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.FileHandler;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Data extends UnicastRemoteObject implements DataIF{ //DataIF를 받아서 Data 클래스를 만들었음
     private static final long serialVersionUID = 1L;
-
+    private final static Logger LOG = Logger.getGlobal();
     protected static StudentList studentList;
     protected static CourseList courseList;
     protected static ReservationList reservationList;

@@ -7,7 +7,6 @@ import java.util.ArrayList;
 
 public class ReservationList implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
 	protected ArrayList<Reservation> reservationL;
 	Reservation reservation;
 	
